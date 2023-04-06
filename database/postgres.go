@@ -2,6 +2,7 @@ package database
 
 import (
 	"hacktiv8-msib-final-project-1/config"
+	"hacktiv8-msib-final-project-1/entity"
 	"log"
 
 	"gorm.io/gorm"
@@ -18,7 +19,7 @@ func init() {
 		log.Fatalln(err.Error())
 	}
 
-	log.Fatalln(db.AutoMigrate())
+	log.Fatalln(db.AutoMigrate(&entity.Todo{}))
 
 	log.Println("Connected to DB!")
 }
