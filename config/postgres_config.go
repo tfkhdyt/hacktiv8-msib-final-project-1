@@ -19,7 +19,9 @@ type databaseConfig struct {
 }
 
 func init() {
-	log.Fatalln(godotenv.Load())
+	if err := godotenv.Load(); err != nil {
+		log.Fatalln(err.Error())
+	}
 }
 
 func GetDBConfig() gorm.Dialector {
