@@ -19,7 +19,9 @@ func init() {
 		log.Fatalln(err.Error())
 	}
 
-	log.Fatalln(db.AutoMigrate(&entity.Todo{}))
+	if err = db.AutoMigrate(&entity.Todo{}); err != nil {
+		log.Fatalln(err.Error())
+	}
 
 	log.Println("Connected to DB!")
 }
