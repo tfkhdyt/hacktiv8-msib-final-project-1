@@ -1,4 +1,14 @@
 definitions:
+  dto.GetAllTodosResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.TodoData'
+        type: array
+      message:
+        example: success
+        type: string
+    type: object
   dto.NewTodoRequest:
     properties:
       completed:
@@ -22,6 +32,18 @@ definitions:
         example: Todo with id 69 has been successfully created
         type: string
     type: object
+  dto.TodoData:
+    properties:
+      completed:
+        example: true
+        type: boolean
+      title:
+        example: Ngoding
+        type: string
+      userId:
+        example: 2
+        type: integer
+    type: object
   errs.MessageErrData:
     properties:
       error:
@@ -38,6 +60,24 @@ info:
   contact: {}
 paths:
   /todos:
+    get:
+      consumes:
+      - application/json
+      description: List todos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetAllTodosResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errs.MessageErrData'
+      summary: Get all todos
+      tags:
+      - todos
     post:
       consumes:
       - application/json

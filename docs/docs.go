@@ -16,6 +16,33 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/todos": {
+            "get": {
+                "description": "List todos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todos"
+                ],
+                "summary": "Get all todos",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetAllTodosResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/errs.MessageErrData"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Create a todo by json",
                 "consumes": [
@@ -63,6 +90,21 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.GetAllTodosResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.TodoData"
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
         "dto.NewTodoRequest": {
             "type": "object",
             "required": [
@@ -93,6 +135,23 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Todo with id 69 has been successfully created"
+                }
+            }
+        },
+        "dto.TodoData": {
+            "type": "object",
+            "properties": {
+                "completed": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Ngoding"
+                },
+                "userId": {
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },

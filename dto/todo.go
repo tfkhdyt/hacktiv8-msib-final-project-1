@@ -27,7 +27,7 @@ type GetAllTodosResponse struct {
 }
 
 type TodoData struct {
-	Title     string `json:"title"`
-	Completed bool   `json:"completed"`
-	UserID    uint   `json:"userId"`
+	Title     string `json:"title" example:"Ngoding"`
+	Completed bool   `json:"completed" example:"true"`
+	UserID    uint   `json:"userId" example:"2"`
 }
