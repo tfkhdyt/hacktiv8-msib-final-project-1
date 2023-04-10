@@ -46,3 +46,13 @@ func (t *todoHandler) CreateTodo(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, createdTodo)
 }
+
+func (t *todoHandler) GetAllTodos(ctx *gin.Context) {
+	todos, err := t.todoService.GetAllTodos()
+	if err != nil {
+		ctx.JSON(err.StatusCode(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, todos)
+}
