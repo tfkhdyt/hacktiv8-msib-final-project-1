@@ -38,6 +38,8 @@ func StartApp() {
 	todoHandler := http_handler.NewTodoHandler(todoService)
 
 	r.POST("/todos", todoHandler.CreateTodo)
+	r.GET("/todos", todoHandler.GetAllTodos)
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	log.Fatalln(r.Run(":" + PORT))
