@@ -1,0 +1,106 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/todos": {
+            "post": {
+                "description": "Create a todo by json",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todos"
+                ],
+                "summary": "Create a todo",
+                "parameters": [
+                    {
+                        "description": "Create todo request body",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.NewTodoRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dto.NewTodoResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/errs.MessageErrData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/errs.MessageErrData"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.NewTodoRequest": {
+            "type": "object",
+            "required": [
+                "title",
+                "userId"
+            ],
+            "properties": {
+                "completed": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Belajar Golang"
+                },
+                "userId": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "dto.NewTodoResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/dto.NewTodoRequest"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Todo with id 69 has been successfully created"
+                }
+            }
+        },
+        "errs.MessageErrData": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "BAD_REQUEST"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "This is an error message"
+                },
+                "statusCode": {
+                    "type": "integer",
+                    "example": 400
+                }
+            }
+        }
+    }
+}

@@ -17,6 +17,18 @@ func NewTodoHandler(todoService service.TodoService) *todoHandler {
 	return &todoHandler{todoService: todoService}
 }
 
+// CreateTodo godoc
+//
+//	@Summary		Create a todo
+//	@Description	Create a todo by json
+//	@Tags			todos
+//	@Accept			json
+//	@Produce		json
+//	@Param			todo	body		dto.NewTodoRequest	true	"Create todo request body"
+//	@Success		201		{object}	dto.NewTodoResponse
+//	@Failure		422		{object}	errs.MessageErrData
+//	@Failure		500		{object}	errs.MessageErrData
+//	@Router			/todos [post]
 func (t *todoHandler) CreateTodo(ctx *gin.Context) {
 	var requestBody dto.NewTodoRequest
 

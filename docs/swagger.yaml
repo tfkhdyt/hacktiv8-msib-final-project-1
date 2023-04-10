@@ -1,0 +1,70 @@
+definitions:
+  dto.NewTodoRequest:
+    properties:
+      completed:
+        example: false
+        type: boolean
+      title:
+        example: Belajar Golang
+        type: string
+      userId:
+        example: 1
+        type: integer
+    required:
+    - title
+    - userId
+    type: object
+  dto.NewTodoResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.NewTodoRequest'
+      message:
+        example: Todo with id 69 has been successfully created
+        type: string
+    type: object
+  errs.MessageErrData:
+    properties:
+      error:
+        example: BAD_REQUEST
+        type: string
+      message:
+        example: This is an error message
+        type: string
+      statusCode:
+        example: 400
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /todos:
+    post:
+      consumes:
+      - application/json
+      description: Create a todo by json
+      parameters:
+      - description: Create todo request body
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/dto.NewTodoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.NewTodoResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/errs.MessageErrData'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errs.MessageErrData'
+      summary: Create a todo
+      tags:
+      - todos
+swagger: "2.0"
