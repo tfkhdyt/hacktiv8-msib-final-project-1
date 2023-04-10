@@ -20,3 +20,14 @@ type NewTodoResponse struct {
 	Message string         `json:"message" example:"Todo with id 69 has been successfully created"`
 	Data    NewTodoRequest `json:"data"`
 }
+
+type GetAllTodosResponse struct {
+	Message string     `json:"message" example:"success"`
+	Data    []TodoData `json:"data"`
+}
+
+type TodoData struct {
+	Title     string `json:"title"`
+	Completed bool   `json:"completed"`
+	UserID    uint   `json:"userId"`
+}
