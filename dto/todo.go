@@ -3,9 +3,9 @@ package dto
 import "hacktiv8-msib-final-project-1/entity"
 
 type NewTodoRequest struct {
-	Title     string `json:"title" binding:"required"`
-	Completed bool   `json:"completed"`
-	UserID    uint   `json:"userId" binding:"required"`
+	Title     string `json:"title" binding:"required" example:"Belajar Golang"`
+	Completed bool   `json:"completed" example:"false"`
+	UserID    uint   `json:"userId" binding:"required" example:"1"`
 }
 
 func (t *NewTodoRequest) TodoRequestToEntity() *entity.Todo {
