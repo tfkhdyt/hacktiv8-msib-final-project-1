@@ -46,3 +46,23 @@ func (t *todoHandler) CreateTodo(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, createdTodo)
 }
+
+// GetAllTodos godoc
+//
+//	@Summary		Get all todos
+//	@Description	List todos
+//	@Tags			todos
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	dto.GetAllTodosResponse
+//	@Failure		500	{object}	errs.MessageErrData
+//	@Router			/todos [get]
+func (t *todoHandler) GetAllTodos(ctx *gin.Context) {
+	todos, err := t.todoService.GetAllTodos()
+	if err != nil {
+		ctx.JSON(err.StatusCode(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, todos)
+}

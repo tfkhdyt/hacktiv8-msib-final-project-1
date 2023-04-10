@@ -9,6 +9,7 @@ import (
 
 type TodoService interface {
 	CreateTodo(payload *dto.NewTodoRequest) (*dto.NewTodoResponse, errs.MessageErr)
+	GetAllTodos() (*dto.GetAllTodosResponse, errs.MessageErr)
 }
 
 type todoService struct {
@@ -34,6 +35,29 @@ func (t *todoService) CreateTodo(payload *dto.NewTodoRequest) (*dto.NewTodoRespo
 			Completed: createdTodo.Completed,
 			UserID:    createdTodo.UserID,
 		},
+	}
+
+	return response, nil
+}
+
+func (t *todoService) GetAllTodos() (*dto.GetAllTodosResponse, errs.MessageErr) {
+	todos, err := t.todoRepo.GetAllTodos()
+	if err != nil {
+		return nil, err
+	}
+
+	todoData := []dto.TodoData{}
+	for _, todo := range todos {
+		todoData = append(todoData, dto.TodoData{
+			Title:     todo.Title,
+			Completed: todo.Completed,
+			UserID:    todo.UserID,
+		})
+	}
+
+	response := &dto.GetAllTodosResponse{
+		Message: "success",
+		Data:    todoData,
 	}
 
 	return response, nil

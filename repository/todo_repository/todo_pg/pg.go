@@ -25,3 +25,14 @@ func (t *todoPG) CreateTodo(todo *entity.Todo) (*entity.Todo, errs.MessageErr) {
 
 	return todo, nil
 }
+
+func (t *todoPG) GetAllTodos() ([]entity.Todo, errs.MessageErr) {
+	var todos []entity.Todo
+
+	if err := t.db.Find(&todos).Error; err != nil {
+		log.Println(err.Error())
+		return nil, errs.NewInternalServerError("Failed to get all todos")
+	}
+
+	return todos, nil
+}
