@@ -9,6 +9,14 @@ definitions:
         example: success
         type: string
     type: object
+  dto.GetTodoByIDResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.TodoDataDetailed'
+      message:
+        example: success
+        type: string
+    type: object
   dto.NewTodoRequest:
     properties:
       completed:
@@ -37,8 +45,32 @@ definitions:
       completed:
         example: true
         type: boolean
+      id:
+        example: 69
+        type: integer
       title:
         example: Ngoding
+        type: string
+      userId:
+        example: 2
+        type: integer
+    type: object
+  dto.TodoDataDetailed:
+    properties:
+      completed:
+        example: true
+        type: boolean
+      createdAt:
+        example: "2023-04-06T17:55:34.070213+07:00"
+        type: string
+      id:
+        example: 69
+        type: integer
+      title:
+        example: Ngoding
+        type: string
+      updatedAt:
+        example: "2023-04-06T17:55:34.070213+07:00"
         type: string
       userId:
         example: 2
@@ -105,6 +137,35 @@ paths:
           schema:
             $ref: '#/definitions/errs.MessageErrData'
       summary: Create a todo
+      tags:
+      - todos
+  /todos/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a todo by id
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetTodoByIDResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.MessageErrData'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errs.MessageErrData'
+      summary: Get a todo
       tags:
       - todos
 swagger: "2.0"

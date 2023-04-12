@@ -87,6 +87,50 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/todos/{id}": {
+            "get": {
+                "description": "Get a todo by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todos"
+                ],
+                "summary": "Get a todo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Todo ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetTodoByIDResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.MessageErrData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/errs.MessageErrData"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -98,6 +142,18 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/dto.TodoData"
                     }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "dto.GetTodoByIDResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/dto.TodoDataDetailed"
                 },
                 "message": {
                     "type": "string",
@@ -145,9 +201,42 @@ const docTemplate = `{
                     "type": "boolean",
                     "example": true
                 },
+                "id": {
+                    "type": "integer",
+                    "example": 69
+                },
                 "title": {
                     "type": "string",
                     "example": "Ngoding"
+                },
+                "userId": {
+                    "type": "integer",
+                    "example": 2
+                }
+            }
+        },
+        "dto.TodoDataDetailed": {
+            "type": "object",
+            "properties": {
+                "completed": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2023-04-06T17:55:34.070213+07:00"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 69
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Ngoding"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2023-04-06T17:55:34.070213+07:00"
                 },
                 "userId": {
                     "type": "integer",
