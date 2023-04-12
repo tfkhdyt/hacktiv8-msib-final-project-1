@@ -5,6 +5,7 @@ import (
 	"hacktiv8-msib-final-project-1/pkg/errs"
 	"hacktiv8-msib-final-project-1/service"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -65,4 +66,22 @@ func (t *todoHandler) GetAllTodos(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, todos)
+}
+
+func (t *todoHandler) GetTodoByID(ctx *gin.Context) {
+	id := ctx.Param("id")
+	idUint, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		newError := errs.NewBadRequest("ID should be an unsigned integer")
+		ctx.JSON(newError.StatusCode(), newError)
+		return
+	}
+
+	todo, err2 := t.todoService.GetTodoByID(uint(idUint))
+	if err2 != nil {
+		ctx.JSON(err2.StatusCode(), err2)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, todo)
 }
