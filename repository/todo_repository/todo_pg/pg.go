@@ -1,6 +1,7 @@
 package todo_pg
 
 import (
+	"fmt"
 	"hacktiv8-msib-final-project-1/entity"
 	"hacktiv8-msib-final-project-1/pkg/errs"
 	"hacktiv8-msib-final-project-1/repository/todo_repository"
@@ -35,4 +36,14 @@ func (t *todoPG) GetAllTodos() ([]entity.Todo, errs.MessageErr) {
 	}
 
 	return todos, nil
+}
+
+func (t *todoPG) GetTodoByID(id uint) (*entity.Todo, errs.MessageErr) {
+	var todo entity.Todo
+
+	if err := t.db.First(&todo, id).Error; err != nil {
+		return nil, errs.NewNotFound(fmt.Sprintf("Todo with id %v is not found", id))
+	}
+
+	return &todo, nil
 }
