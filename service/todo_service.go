@@ -10,6 +10,7 @@ import (
 type TodoService interface {
 	CreateTodo(payload *dto.NewTodoRequest) (*dto.NewTodoResponse, errs.MessageErr)
 	GetAllTodos() (*dto.GetAllTodosResponse, errs.MessageErr)
+	GetTodoByID(id uint) (*dto.GetTodoByIDResponse, errs.MessageErr)
 }
 
 type todoService struct {
@@ -49,6 +50,7 @@ func (t *todoService) GetAllTodos() (*dto.GetAllTodosResponse, errs.MessageErr) 
 	todoData := []dto.TodoData{}
 	for _, todo := range todos {
 		todoData = append(todoData, dto.TodoData{
+			ID:        todo.ID,
 			Title:     todo.Title,
 			Completed: todo.Completed,
 			UserID:    todo.UserID,
@@ -58,6 +60,27 @@ func (t *todoService) GetAllTodos() (*dto.GetAllTodosResponse, errs.MessageErr) 
 	response := &dto.GetAllTodosResponse{
 		Message: "success",
 		Data:    todoData,
+	}
+
+	return response, nil
+}
+
+func (t *todoService) GetTodoByID(id uint) (*dto.GetTodoByIDResponse, errs.MessageErr) {
+	todo, err := t.todoRepo.GetTodoByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	response := &dto.GetTodoByIDResponse{
+		Message: "success",
+		Data: dto.TodoDataDetailed{
+			ID:        todo.ID,
+			Title:     todo.Title,
+			Completed: todo.Completed,
+			UserID:    todo.UserID,
+			CreatedAt: todo.CreatedAt,
+			UpdatedAt: todo.UpdatedAt,
+		},
 	}
 
 	return response, nil
