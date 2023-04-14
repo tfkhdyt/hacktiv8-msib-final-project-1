@@ -34,7 +34,7 @@ func (t *todoService) CreateTodo(payload *dto.NewTodoRequest) (*dto.NewTodoRespo
 		Data: dto.NewTodoRequest{
 			Title:     createdTodo.Title,
 			Completed: createdTodo.Completed,
-			UserID:    createdTodo.UserID,
+			// UserID:    createdTodo.UserID,
 		},
 	}
 
@@ -53,7 +53,7 @@ func (t *todoService) GetAllTodos() (*dto.GetAllTodosResponse, errs.MessageErr) 
 			ID:        todo.ID,
 			Title:     todo.Title,
 			Completed: todo.Completed,
-			UserID:    todo.UserID,
+			// UserID:    todo.UserID,
 		})
 	}
 
@@ -77,7 +77,7 @@ func (t *todoService) GetTodoByID(id uint) (*dto.GetTodoByIDResponse, errs.Messa
 			ID:        todo.ID,
 			Title:     todo.Title,
 			Completed: todo.Completed,
-			UserID:    todo.UserID,
+			// UserID:    todo.UserID,
 			CreatedAt: todo.CreatedAt,
 			UpdatedAt: todo.UpdatedAt,
 		},

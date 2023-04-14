@@ -6,5 +6,5 @@ type Todo struct {
 	gorm.Model
 	Title     string
 	Completed bool
-	UserID    uint
+	// UserID    uint
 }
