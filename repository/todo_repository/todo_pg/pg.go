@@ -47,3 +47,12 @@ func (t *todoPG) GetTodoByID(id uint) (*entity.Todo, errs.MessageErr) {
 
 	return &todo, nil
 }
+
+func (t *todoPG) DeleteTodo(id uint) errs.MessageErr {
+	if err := t.db.Where("id = ?", id).Delete(&entity.Todo{}).Error; err != nil {
+		log.Println(err.Error())
+		return errs.NewInternalServerError(fmt.Sprintf("Failed to delete todo with id %v", id))
+	}
+
+	return nil
+}
