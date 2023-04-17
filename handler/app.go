@@ -40,6 +40,7 @@ func StartApp() {
 	r.POST("/todos", todoHandler.CreateTodo)
 	r.GET("/todos", todoHandler.GetAllTodos)
 	r.GET("/todos/:id", todoHandler.GetTodoByID)
+	r.DELETE("/todos/:id", todoHandler.DeleteTodo)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
