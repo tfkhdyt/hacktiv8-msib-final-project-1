@@ -1,4 +1,10 @@
 definitions:
+  dto.DeleteTodoResponse:
+    properties:
+      message:
+        example: Todo with id 5 has been successfully deleted
+        type: string
+    type: object
   dto.GetAllTodosResponse:
     properties:
       data:
@@ -25,12 +31,8 @@ definitions:
       title:
         example: Belajar Golang
         type: string
-      userId:
-        example: 1
-        type: integer
     required:
     - title
-    - userId
     type: object
   dto.NewTodoResponse:
     properties:
@@ -51,9 +53,6 @@ definitions:
       title:
         example: Ngoding
         type: string
-      userId:
-        example: 2
-        type: integer
     type: object
   dto.TodoDataDetailed:
     properties:
@@ -61,6 +60,7 @@ definitions:
         example: true
         type: boolean
       createdAt:
+        description: UserID    uint      `json:"userId" example:"2"`
         example: "2023-04-06T17:55:34.070213+07:00"
         type: string
       id:
@@ -72,9 +72,6 @@ definitions:
       updatedAt:
         example: "2023-04-06T17:55:34.070213+07:00"
         type: string
-      userId:
-        example: 2
-        type: integer
     type: object
   errs.MessageErrData:
     properties:
@@ -140,6 +137,38 @@ paths:
       tags:
       - todos
   /todos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a todo by id
+      parameters:
+      - description: todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.DeleteTodoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errs.MessageErrData'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errs.MessageErrData'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errs.MessageErrData'
+      summary: Delete todo
+      tags:
+      - todos
     get:
       consumes:
       - application/json

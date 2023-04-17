@@ -98,6 +98,19 @@ func (t *todoHandler) GetTodoByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, todo)
 }
 
+// DeleteTodo godoc
+//
+//	@Summary		Delete todo
+//	@Description	Delete a todo by id
+//	@Tags			todos
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		uint	true	"todo ID"
+//	@Success		200	{object}	dto.DeleteTodoResponse
+//	@Failure		400	{object}	errs.MessageErrData
+//	@Failure		404	{object}	errs.MessageErrData
+//	@Failure		500	{object}	errs.MessageErrData
+//	@Router			/todos/{id} [delete]
 func (t *todoHandler) DeleteTodo(ctx *gin.Context) {
 	id := ctx.Param("id")
 	idUint, err := strconv.ParseUint(id, 10, 64)

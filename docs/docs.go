@@ -130,10 +130,67 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "description": "Delete a todo by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todos"
+                ],
+                "summary": "Delete todo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "todo ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.DeleteTodoResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/errs.MessageErrData"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/errs.MessageErrData"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/errs.MessageErrData"
+                        }
+                    }
+                }
             }
         }
     },
     "definitions": {
+        "dto.DeleteTodoResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Todo with id 5 has been successfully deleted"
+                }
+            }
+        },
         "dto.GetAllTodosResponse": {
             "type": "object",
             "properties": {
@@ -164,8 +221,7 @@ const docTemplate = `{
         "dto.NewTodoRequest": {
             "type": "object",
             "required": [
-                "title",
-                "userId"
+                "title"
             ],
             "properties": {
                 "completed": {
@@ -175,10 +231,6 @@ const docTemplate = `{
                 "title": {
                     "type": "string",
                     "example": "Belajar Golang"
-                },
-                "userId": {
-                    "type": "integer",
-                    "example": 1
                 }
             }
         },
@@ -208,10 +260,6 @@ const docTemplate = `{
                 "title": {
                     "type": "string",
                     "example": "Ngoding"
-                },
-                "userId": {
-                    "type": "integer",
-                    "example": 2
                 }
             }
         },
@@ -223,6 +271,7 @@ const docTemplate = `{
                     "example": true
                 },
                 "createdAt": {
+                    "description": "UserID    uint      ` + "`" + `json:\"userId\" example:\"2\"` + "`" + `",
                     "type": "string",
                     "example": "2023-04-06T17:55:34.070213+07:00"
                 },
@@ -237,10 +286,6 @@ const docTemplate = `{
                 "updatedAt": {
                     "type": "string",
                     "example": "2023-04-06T17:55:34.070213+07:00"
-                },
-                "userId": {
-                    "type": "integer",
-                    "example": 2
                 }
             }
         },
