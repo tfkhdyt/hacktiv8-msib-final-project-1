@@ -11,6 +11,7 @@ type TodoService interface {
 	CreateTodo(payload *dto.NewTodoRequest) (*dto.NewTodoResponse, errs.MessageErr)
 	GetAllTodos() (*dto.GetAllTodosResponse, errs.MessageErr)
 	GetTodoByID(id uint) (*dto.GetTodoByIDResponse, errs.MessageErr)
+	DeleteTodo(id uint) (*dto.DeleteTodoResponse, errs.MessageErr)
 }
 
 type todoService struct {
@@ -81,6 +82,23 @@ func (t *todoService) GetTodoByID(id uint) (*dto.GetTodoByIDResponse, errs.Messa
 			CreatedAt: todo.CreatedAt,
 			UpdatedAt: todo.UpdatedAt,
 		},
+	}
+
+	return response, nil
+}
+
+func (t *todoService) DeleteTodo(id uint) (*dto.DeleteTodoResponse, errs.MessageErr) {
+	_, err := t.todoRepo.GetTodoByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := t.todoRepo.DeleteTodo(id); err != nil {
+		return nil, err
+	}
+
+	response := &dto.DeleteTodoResponse{
+		Message: fmt.Sprintf("Todo with id %v has been successfully deleted", id),
 	}
 
 	return response, nil

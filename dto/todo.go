@@ -34,6 +34,10 @@ type GetTodoByIDResponse struct {
 	Data    TodoDataDetailed `json:"data"`
 }
 
+type DeleteTodoResponse struct {
+	Message string `json:"message" example:"Todo with id 5 has been successfully deleted"`
+}
+
 type TodoData struct {
 	ID        uint   `json:"id" example:"69"`
 	Title     string `json:"title" example:"Ngoding"`
