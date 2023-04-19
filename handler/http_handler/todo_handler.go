@@ -98,6 +98,21 @@ func (t *todoHandler) GetTodoByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, todo)
 }
 
+// UpdateTodo godoc
+//
+//	@Summary		Update todo
+//	@Description	Update a todo by json
+//	@Tags			todos
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		uint				true	"Todo ID"
+//	@Param			todo	body		dto.NewTodoRequest	true	"Update todo request body"
+//	@Success		200		{object}	dto.GetTodoByIDResponse
+//	@Failure		400		{object}	errs.MessageErrData
+//	@Failure		422		{object}	errs.MessageErrData
+//	@Failure		404		{object}	errs.MessageErrData
+//	@Failure		500		{object}	errs.MessageErrData
+//	@Router			/todos/{id} [put]
 func (t *todoHandler) UpdateTodo(ctx *gin.Context) {
 	id := ctx.Param("id")
 	idUint, err := strconv.ParseUint(id, 10, 64)
