@@ -98,6 +98,32 @@ func (t *todoHandler) GetTodoByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, todo)
 }
 
+func (t *todoHandler) UpdateTodo(ctx *gin.Context) {
+	id := ctx.Param("id")
+	idUint, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		newError := errs.NewBadRequest("ID should be an unsigned integer")
+		ctx.JSON(newError.StatusCode(), newError)
+		return
+	}
+
+	var newTodo dto.NewTodoRequest
+
+	if err := ctx.ShouldBindJSON(&newTodo); err != nil {
+		newError := errs.NewUnprocessableEntity(err.Error())
+		ctx.JSON(newError.StatusCode(), newError)
+		return
+	}
+
+	updatedTodo, err2 := t.todoService.UpdateTodo(uint(idUint), &newTodo)
+	if err2 != nil {
+		ctx.JSON(err2.StatusCode(), err2)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, updatedTodo)
+}
+
 // DeleteTodo godoc
 //
 //	@Summary		Delete todo
