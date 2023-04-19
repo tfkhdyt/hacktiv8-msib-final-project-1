@@ -11,6 +11,7 @@ type TodoService interface {
 	CreateTodo(payload *dto.NewTodoRequest) (*dto.NewTodoResponse, errs.MessageErr)
 	GetAllTodos() (*dto.GetAllTodosResponse, errs.MessageErr)
 	GetTodoByID(id uint) (*dto.GetTodoByIDResponse, errs.MessageErr)
+	UpdateTodo(id uint, newTodo *dto.NewTodoRequest) (*dto.GetTodoByIDResponse, errs.MessageErr)
 	DeleteTodo(id uint) (*dto.DeleteTodoResponse, errs.MessageErr)
 }
 
@@ -81,6 +82,33 @@ func (t *todoService) GetTodoByID(id uint) (*dto.GetTodoByIDResponse, errs.Messa
 			// UserID:    todo.UserID,
 			CreatedAt: todo.CreatedAt,
 			UpdatedAt: todo.UpdatedAt,
+		},
+	}
+
+	return response, nil
+}
+
+func (t *todoService) UpdateTodo(id uint, newTodo *dto.NewTodoRequest) (*dto.GetTodoByIDResponse, errs.MessageErr) {
+	newTodoEntity := newTodo.TodoRequestToEntity()
+
+	oldTodo, err := t.todoRepo.GetTodoByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	updatedTodo, err2 := t.todoRepo.UpdateTodo(oldTodo, newTodoEntity)
+	if err2 != nil {
+		return nil, err
+	}
+
+	response := &dto.GetTodoByIDResponse{
+		Message: fmt.Sprintf("Todo with id %v has been successfully updated", id),
+		Data: dto.TodoDataDetailed{
+			ID:        updatedTodo.ID,
+			Title:     updatedTodo.Title,
+			Completed: updatedTodo.Completed,
+			CreatedAt: updatedTodo.CreatedAt,
+			UpdatedAt: updatedTodo.UpdatedAt,
 		},
 	}
 
