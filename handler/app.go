@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"hacktiv8-msib-final-project-1/database"
 	"hacktiv8-msib-final-project-1/docs"
 	"hacktiv8-msib-final-project-1/handler/http_handler"
@@ -14,13 +15,19 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-var PORT = os.Getenv("PORT")
+var (
+	port    = os.Getenv("PORT")
+	appHost = os.Getenv("APP_HOST")
+)
 
 func init() {
+	if port == "" {
+		port = "8080"
+	}
 	docs.SwaggerInfo.Title = "Todo Application"
 	docs.SwaggerInfo.Description = "This is a todo list management application"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:8080"
+	docs.SwaggerInfo.Host = fmt.Sprintf("%s:%s", appHost, port)
 	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 }
@@ -28,9 +35,6 @@ func init() {
 func StartApp() {
 	db := database.GetPostgresInstance()
 
-	if PORT == "" {
-		PORT = "8080"
-	}
 	r := gin.Default()
 
 	todoRepo := todo_pg.NewTodoPG(db)
@@ -45,5 +49,5 @@ func StartApp() {
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	log.Fatalln(r.Run(":" + PORT))
+	log.Fatalln(r.Run(":" + port))
 }
