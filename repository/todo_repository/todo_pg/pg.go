@@ -48,6 +48,14 @@ func (t *todoPG) GetTodoByID(id uint) (*entity.Todo, errs.MessageErr) {
 	return &todo, nil
 }
 
+func (t *todoPG) UpdateTodo(oldTodo *entity.Todo, newTodo *entity.Todo) (*entity.Todo, errs.MessageErr) {
+	if err := t.db.Model(oldTodo).Updates(newTodo).Error; err != nil {
+		return nil, errs.NewInternalServerError(fmt.Sprintf("Failed to update todo with id %v", oldTodo.ID))
+	}
+
+	return oldTodo, nil
+}
+
 func (t *todoPG) DeleteTodo(id uint) errs.MessageErr {
 	if err := t.db.Where("id = ?", id).Delete(&entity.Todo{}).Error; err != nil {
 		log.Println(err.Error())
