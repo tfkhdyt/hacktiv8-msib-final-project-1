@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"hacktiv8-msib-final-project-1/database"
 	"hacktiv8-msib-final-project-1/docs"
 	"hacktiv8-msib-final-project-1/handler/http_handler"
@@ -18,6 +17,7 @@ import (
 var (
 	port    = os.Getenv("PORT")
 	appHost = os.Getenv("APP_HOST")
+	ginMode = os.Getenv("GIN_MODE")
 )
 
 func init() {
@@ -27,9 +27,13 @@ func init() {
 	docs.SwaggerInfo.Title = "Todo Application"
 	docs.SwaggerInfo.Description = "This is a todo list management application"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = fmt.Sprintf("%s:%s", appHost, port)
 	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+	if ginMode == "release" {
+		docs.SwaggerInfo.Host = appHost
+	} else {
+		docs.SwaggerInfo.Host = appHost + ":" + port
+	}
 }
 
 func StartApp() {
